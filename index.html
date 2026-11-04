@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>MVP Squad 02 · Bulbe</title>
+<title>MVP Sprint 2 · Squad 02</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -128,29 +128,6 @@
     letter-spacing: 1.5px;
     text-transform: uppercase;
     color: var(--verde);
-  }
-
-  .criterios {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-size: 0.85rem;
-    line-height: 1.45;
-  }
-
-  .criterios li {
-    display: grid;
-    grid-template-columns: 18px 1fr;
-    gap: 6px;
-  }
-
-  .criterios li::before {
-    content: "✓";
-    color: var(--verde);
-    font-weight: 700;
   }
 
   /* Telas do fluxo: atalhos que trocam a tela dentro do celular */
@@ -388,6 +365,15 @@
     line-height: 1;
   }
 
+  /* Capa e encerramento: o card da dor e a lista da equipe, com espaço entre eles */
+  #extra {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #extra:empty { display: none; }
+
   [hidden] { display: none !important; }
 
   @media (max-width: 860px) {
@@ -423,12 +409,6 @@
     <div class="bloco" id="bloco-telas">
       <h2>Telas deste fluxo</h2>
       <div class="telas" id="telas"></div>
-      <p class="dica">As telas são o código do repositório, funcionando. Dá para clicar e navegar dentro do celular.</p>
-    </div>
-
-    <div class="bloco" id="bloco-criterios">
-      <h2>Critérios de aceite</h2>
-      <ul class="criterios" id="criterios"></ul>
     </div>
 
     <div class="controles">
@@ -462,65 +442,59 @@
     {
       id: 'capa',
       nome: 'Capa',
-      titulo: 'Guia de Entendimento do Cliente Bulbe',
+      titulo: 'Guia de Entendimento do Cliente Bulbe · Sprint 2',
       historia: 'Clientes não entendem como a Bulbe funciona nem de onde vem o desconto: 27,7% do churn acontece por falta de compreensão do produto. Cada integrante criou uma persona, mapeou a jornada dela e transformou o principal ponto de dor em telas do app.',
       capa: true,
-      aviso: { selo: 'MVP · Sprint II', titulo: 'Seis personas, uma jornada', texto: 'Da descoberta da Bulbe à mudança de endereço, cada slide mostra as telas reais de um integrante, funcionando.' }
+      aviso: { selo: 'MVP · Sprint II', titulo: 'Apresentação das telas do grupo', texto: 'Da descoberta da Bulbe à mudança de endereço, cada slide mostra as telas reais de um integrante, funcionando.' }
     },
     {
       id: 'carla',
       nome: 'Carla · Como funciona',
       titulo: 'Entender como a Bulbe funciona',
-      hu: 'HU01', persona: 'Carla Mendes, 38 anos', autor: 'João Pedro Roenick',
+      hu: 'HU1', persona: 'Carla Mendes, 38 anos', autor: 'João Pedro Roenick',
       historia: 'Como Carla, cliente nova que não entende como a Bulbe funciona, quero ver uma explicação simples de como a energia por assinatura funciona já na página de entrada, para decidir a adesão com confiança.',
-      telas: [['Como funciona a Bulbe?', 'pages/telas-joao/index.html']],
-      criterios: ['Seção "Como funciona" com no máximo 4 passos e sem termos técnicos', 'Responde, em linguagem simples, de onde vem o desconto', 'Informa que o cliente continua recebendo energia da Cemig', 'Visível sem que o cliente precise criar conta']
+      telas: [['Como funciona a Bulbe?', 'pages/telas-joao/index.html']]
     },
     {
       id: 'antonio',
       nome: 'Antônio · Duas contas',
       titulo: 'Explicar as duas contas ao titular',
-      hu: 'HU01', persona: 'Antônio, 63 anos', autor: 'Thiago Peixoto',
+      hu: 'HU2', persona: 'Antônio, 63 anos', autor: 'Thiago Peixoto',
       historia: 'Como familiar que faz a adesão em nome do titular da conta de luz, quero informar que o cadastro é para outra pessoa e enviar a ele pelo WhatsApp uma explicação simples de como fica a conta de luz com a Bulbe, para que ele entenda que a economia vem da Bulbe e reconheça a cobrança como legítima.',
-      telas: [['Informe seus dados', 'pages/hu-antonio/index.html'], ['Veja como fica a conta', 'pages/hu-antonio/como-fica.html'], ['Confira a mensagem', 'pages/hu-antonio/mensagem.html']],
-      criterios: ['Informa, durante a adesão, que o cadastro é para outra pessoa, com nome e WhatsApp do titular e de quem preenche', 'Quem cadastra fica vinculado à conta e recebe os avisos de fatura junto com o titular', 'Mostra o total de antes (só Cemig) e o de depois (Cemig + Bulbe), com a economia mensal, sem termos técnicos', 'Permite conferir a mensagem pronta antes de enviá-la ao titular pelo WhatsApp', 'A mensagem deixa claro que a cobrança da Bulbe é verdadeira e pode ser paga na lotérica']
+      telas: [['Informe seus dados', 'pages/hu-antonio/index.html'], ['Veja como fica a conta', 'pages/hu-antonio/como-fica.html'], ['Confira a mensagem', 'pages/hu-antonio/mensagem.html']]
     },
     {
       id: 'maria',
       nome: 'Maria · Etapas',
       titulo: 'Acompanhar as etapas da adesão',
-      hu: 'HU01', persona: 'Maria, 35 anos', autor: 'Elita Rodrigues',
+      hu: 'HU3', persona: 'Maria, 35 anos', autor: 'Elita Rodrigues',
       historia: 'Como cliente da Bulbe Energia, quero acompanhar as etapas da minha conta de luz, para saber em que fase está o processo e o que preciso fazer em seguida.',
-      telas: [['Acompanhe suas etapas', 'pages/exemplo-elita.html']],
-      criterios: ['Visualiza as etapas do processo da conta de luz', 'Identifica em qual etapa o processo está', 'Distingue as etapas concluídas das pendentes', 'Entende o andamento do processo']
+      telas: [['Acompanhe suas etapas', 'pages/exemplo-elita.html']]
     },
     {
       id: 'lucas',
       nome: 'Lucas · Duas faturas',
       titulo: 'Entender as duas faturas e a economia do mês',
-      hu: 'HU01', persona: 'Lucas, 25 anos', autor: 'Sandro Viglioni',
+      hu: 'HU4', persona: 'Lucas, 25 anos', autor: 'Sandro Viglioni',
       historia: 'Como Lucas, quero ver de forma clara por que recebo duas faturas (Cemig e Bulbe), com um demonstrativo simples da minha economia, e receber um resumo mensal por WhatsApp, para entender que não pago duas vezes pelo mesmo serviço e não correr o risco de cancelamento.',
-      telas: [['Entenda suas faturas', 'pages/hu-lucas/index.html'], ['Veja como fica a conta', 'pages/hu-lucas/resumo-mes.html'], ['Confira a mensagem', 'pages/hu-lucas/mensagem.html']],
-      criterios: ['Separa a taxa de distribuição e iluminação (Cemig) da energia com desconto (Bulbe), com a dúvida "Por que ainda recebo a fatura da Cemig?"', 'Mostra o total de antes e o de depois lado a lado, com a economia do mês em reais em destaque', 'Usa termos simples, como "créditos gerados", no lugar de "energia injetada"', 'Mensagem no WhatsApp com o valor da fatura Bulbe e a economia do mês']
+      telas: [['Entenda suas faturas', 'pages/hu-lucas/index.html'], ['Veja como fica a conta', 'pages/hu-lucas/resumo-mes.html'], ['Confira a mensagem', 'pages/hu-lucas/mensagem.html']]
     },
     {
       id: 'henrique',
       nome: 'Henrique · Desconto real',
       titulo: 'Conferir o desconto real do mês',
-      hu: 'HU01', persona: 'Henrique, 44 anos', autor: 'Leandro Pacheco',
+      hu: 'HU5', persona: 'Henrique, 44 anos', autor: 'Leandro Pacheco',
       historia: 'Como Henrique, quero ver na fatura o desconto real do mês e o motivo quando for menor que o anunciado, para conferir minha economia sem fazer conta por fora.',
       telas: [],
-      aviso: { selo: 'Em desenvolvimento', titulo: 'Fatura com o desconto real do mês', texto: 'As telas desta história ainda estão sendo finalizadas e entram no repositório na próxima entrega.' },
-      criterios: ['A fatura mostra o desconto aplicado em percentual', 'A fatura mostra o motivo quando o desconto é menor que o anunciado', 'O mesmo dado aparece no App Bulbe']
+      aviso: { selo: 'Em desenvolvimento', titulo: 'Fatura com o desconto real do mês', texto: 'As telas desta história ainda estão sendo finalizadas e entram no repositório na próxima entrega.' }
     },
     {
       id: 'mariana',
       nome: 'Mariana · Mudança',
       titulo: 'Mudar de endereço sem cancelar',
-      hu: 'HU01', persona: 'Mariana, 34 anos', autor: 'Pedro Henrique Lima',
+      hu: 'HU6', persona: 'Mariana, 34 anos', autor: 'Pedro Henrique Lima',
       historia: 'Como cliente da Bulbe que vai mudar de endereço, quero saber o que acontece com meu contrato e pedir a transferência para o novo endereço, para continuar economizando sem cancelar.',
-      telas: [['Perguntas frequentes', 'pages/hu-mariana/index.html'], ['Mudei de endereço', 'pages/hu-mariana/mudanca-endereco.html'], ['Novo endereço', 'pages/hu-mariana/novo-endereco.html'], ['Pedido enviado', 'pages/hu-mariana/pedido-enviado.html']],
-      criterios: ['Explica, em linguagem simples, se mudar de endereço cancela o contrato ou transfere a titularidade', 'Permite iniciar a transferência pelo app ou pelo WhatsApp', 'Informa o que é preciso enviar e quanto tempo leva até a economia voltar', 'Deixa claro que consultar não inicia o cancelamento']
+      telas: [['Perguntas frequentes', 'pages/hu-mariana/index.html'], ['Mudei de endereço', 'pages/hu-mariana/mudanca-endereco.html'], ['Novo endereço', 'pages/hu-mariana/novo-endereco.html'], ['Pedido enviado', 'pages/hu-mariana/pedido-enviado.html']]
     },
     {
       id: 'encerramento',
@@ -528,7 +502,7 @@
       titulo: 'Uma jornada explicada, do anúncio à mudança',
       historia: 'As seis histórias cobrem os momentos em que o cliente mais se confunde: entender o produto, aderir por outra pessoa, esperar a conexão, receber duas faturas, conferir o desconto e mudar de endereço. Todas as telas seguem o mesmo template, com a identidade visual da Bulbe.',
       capa: true,
-      aviso: { selo: 'Obrigado!', titulo: 'Squad 02', texto: 'Código, histórias e wireframes no repositório do grupo no GitHub (Joao-R-web/202602-projeto1-a-grupo02).' }
+      aviso: { selo: 'Squad 02', titulo: 'Obrigado!', texto: 'Código, histórias e wireframes no repositório do grupo no GitHub (Joao-R-web/202602-projeto1-a-grupo02).' }
     }
   ];
 
@@ -616,7 +590,6 @@
     }
 
     $('bloco-telas').hidden = !s.telas || s.telas.length === 0;
-    $('bloco-criterios').hidden = !s.criterios;
 
     const telas = $('telas');
     telas.replaceChildren();
@@ -627,9 +600,6 @@
       b.addEventListener('click', () => abrirTela(caminho));
       telas.append(b);
     });
-
-    const crit = $('criterios');
-    crit.replaceChildren(...(s.criterios || []).map((c) => criar('li', c)));
 
     // Celular: tela real ou aviso
     const temTela = s.telas && s.telas.length > 0;
