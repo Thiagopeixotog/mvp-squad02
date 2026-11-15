@@ -387,6 +387,15 @@
     .painel > * { animation: entrar 0.35s ease both; }
     @keyframes entrar { from { opacity: 0.001; transform: translateY(6px); } to { opacity: 1; transform: none; } }
   }
+  .nota-integracao {
+    margin: 0;
+    padding: 10px 14px;
+    border: 1px dashed rgba(255, 255, 255, 0.45);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: #DDE3F5;
+  }
+  .nota-integracao b { color: var(--verde); font-weight: 600; }
 </style>
 </head>
 <body>
@@ -409,6 +418,8 @@
       <h2>Telas deste fluxo</h2>
       <div class="telas" id="telas"></div>
     </div>
+
+    <p class="nota-integracao" id="integracao" hidden></p>
 
     <div class="controles">
       <button type="button" id="anterior">← Anterior</button>
@@ -436,13 +447,13 @@
 
 <script>
   // ---------- Conteúdo dos slides ----------
-  // A ordem segue a jornada do cliente: descoberta → adesão (para si ou para outra pessoa) → etapas → desconto → mudança.
+  // A ordem segue a jornada do cliente: descoberta → adesão (Antônio, integrada ao Lucas) → etapas (Maria, integrada ao Henrique) → desconto → mudança.
   const SLIDES = [
     {
       id: 'capa',
       nome: 'Capa',
       titulo: 'Guia de Entendimento do Cliente Bulbe · Sprint final',
-      historia: 'Clientes não entendem como a Bulbe funciona nem de onde vem o desconto: 27,7% do churn acontece por falta de compreensão do produto. Cada integrante criou uma persona, mapeou a jornada dela e transformou o principal ponto de dor em telas do app. Na sprint final, as telas foram organizadas na ordem da jornada e parte delas foi integrada em um único fluxo.',
+      historia: 'Clientes não entendem como a Bulbe funciona nem de onde vem o desconto: 27,7% do churn acontece por falta de compreensão do produto. Cada integrante criou uma persona, mapeou a jornada dela e transformou o principal ponto de dor em telas do app. Na sprint final, as telas foram organizadas na ordem da jornada e algumas foram integradas: Antônio com Lucas, na adesão, e Maria com Henrique, nas abas do app.',
       capa: true,
       aviso: { selo: 'MVP · Sprint final', titulo: 'Apresentação das telas do grupo', texto: 'Da descoberta da Bulbe à mudança de endereço, na ordem da jornada do cliente.' }
     },
@@ -455,26 +466,29 @@
       telas: [['Como funciona a Bulbe?', '../pages/Telas-Jo%C3%A3o/index.html']]
     },
     {
-      id: 'adesao',
-      nome: 'Antônio + Lucas · Adesão integrada',
-      titulo: 'Adesão: para mim ou para outra pessoa',
-      hu: 'HU2 + HU4', persona: 'Antônio, 63 anos · Lucas, 25 anos', autor: 'Thiago Peixoto · Sandro Viglioni',
-      historia: 'Na adesão, a pessoa informa para quem é o cadastro. “Para outra pessoa” segue o fluxo do Antônio: o familiar vê como fica a conta do titular e envia a explicação a ele pelo WhatsApp. “Para mim” segue o fluxo do Lucas: o próprio titular entende por que vai receber duas faturas, quanto economiza e como a Bulbe o avisa.',
-      integrado: true,
-      telas: [
-        ['Informe seus dados (início)', '../pages/hu-antonio/index.html'],
-        ['Para outra pessoa · Veja como fica a conta', '../pages/hu-antonio/como-fica.html'],
-        ['Para outra pessoa · Confira a mensagem', '../pages/hu-antonio/mensagem.html'],
-        ['Para mim · Entenda suas faturas', '../pages/hu-lucas/index.html'],
-        ['Para mim · Veja como fica a conta', '../pages/hu-lucas/resumo-mes.html'],
-        ['Para mim · Confira a mensagem', '../pages/hu-lucas/mensagem.html']
-      ]
+      id: 'antonio',
+      nome: 'Antônio · Duas contas',
+      titulo: 'Explicar as duas contas ao titular',
+      hu: 'HU2', persona: 'Antônio, 63 anos', autor: 'Thiago Peixoto',
+      integrado: 'com o Lucas. “Para mim” segue para as telas dele',
+      historia: 'Como familiar que faz a adesão em nome do titular da conta de luz, quero informar que o cadastro é para outra pessoa e enviar a ele pelo WhatsApp uma explicação simples de como fica a conta de luz com a Bulbe, para que ele entenda que a economia vem da Bulbe e reconheça a cobrança como legítima.',
+      telas: [['Informe seus dados', '../pages/hu-antonio/index.html'], ['Veja como fica a conta', '../pages/hu-antonio/como-fica.html'], ['Confira a mensagem', '../pages/hu-antonio/mensagem.html']]
+    },
+    {
+      id: 'lucas',
+      nome: 'Lucas · Duas faturas',
+      titulo: 'Entender as duas faturas e a economia do mês',
+      hu: 'HU4', persona: 'Lucas, 25 anos', autor: 'Sandro Viglioni',
+      integrado: 'com o Antônio. O fluxo começa no “Para mim” da adesão',
+      historia: 'Como Lucas, quero ver de forma clara por que recebo duas faturas (Cemig e Bulbe), com um demonstrativo simples da minha economia, e receber um resumo mensal por WhatsApp, para entender que não pago duas vezes pelo mesmo serviço e não correr o risco de cancelamento.',
+      telas: [['Entenda suas faturas', '../pages/hu-lucas/index.html'], ['Veja como fica a conta', '../pages/hu-lucas/resumo-mes.html'], ['Confira a mensagem', '../pages/hu-lucas/mensagem.html']]
     },
     {
       id: 'maria',
       nome: 'Maria · Etapas',
       titulo: 'Acompanhar as etapas da adesão',
       hu: 'HU3', persona: 'Maria, 35 anos', autor: 'Elita Rodrigues',
+      integrado: 'com o Henrique. A aba Consumo leva às telas dele',
       historia: 'Como cliente da Bulbe Energia, quero acompanhar as etapas da minha conta de luz, para saber em que fase está o processo e o que preciso fazer em seguida.',
       telas: [['Acompanhe suas etapas', '../pages/exemplo-elita.html']]
     },
@@ -483,6 +497,7 @@
       nome: 'Henrique · Desconto real',
       titulo: 'Conferir o desconto real do mês',
       hu: 'HU5', persona: 'Henrique, 44 anos', autor: 'Leandro Pacheco',
+      integrado: 'com a Maria. A aba Conexão volta às telas dela',
       historia: 'Como Henrique, quero ver na fatura o desconto real do mês e o motivo quando for menor que o anunciado, para conferir minha economia sem fazer conta por fora.',
       telas: [['Consumo', '../pages/consumo/index.html'], ['Cenários de consumo', '../pages/consumo-cenarios/index.html'], ['Créditos do mês', '../pages/consumo-creditos/index.html']]
     },
@@ -498,7 +513,7 @@
       id: 'encerramento',
       nome: 'Encerramento',
       titulo: 'Uma jornada explicada, do anúncio à mudança',
-      historia: 'As seis histórias cobrem os momentos em que o cliente mais se confunde: entender o produto, aderir para si ou por outra pessoa, acompanhar a conexão, entender as duas faturas, conferir o desconto e mudar de endereço. Todas as telas seguem o mesmo template, com a identidade visual da Bulbe.',
+      historia: 'As seis histórias cobrem os momentos em que o cliente mais se confunde: entender o produto, aderir por outra pessoa, acompanhar a conexão, entender as duas faturas, conferir o desconto e mudar de endereço. Todas as telas seguem o mesmo template, com a identidade visual da Bulbe.',
       capa: true,
       aviso: { selo: 'Squad 02', titulo: 'Obrigado!', texto: 'Código, histórias e wireframes no repositório do grupo no GitHub (Joao-R-web/202602-projeto1-a-grupo02).' }
     }
@@ -543,9 +558,10 @@
 
   app.addEventListener('load', () => { marcarTelaAtual(); integrarFluxo(); });
 
-  // ---------- Fluxo integrado (Antônio + Lucas) ----------
-  // As telas do repositório continuam independentes. Só aqui, na apresentação, a escolha
-  // "Para mim" da tela 1 do Antônio leva às telas do Lucas, e as etapas viram 1/4 a 4/4.
+  // ---------- Fluxos integrados (só na apresentação) ----------
+  // As telas do repositório continuam independentes. Aqui, na apresentação:
+  // - "Para mim" na tela 1 do Antônio leva às telas do Lucas, e as etapas viram 1/4 a 4/4;
+  // - a aba Consumo da Maria leva às telas do Henrique, e a aba Conexão do Henrique volta à Maria.
   const TELA_LUCAS = '../pages/hu-lucas/index.html';
   const ETAPAS_LUCAS = { 'hu-lucas/index.html': '2/4', 'hu-lucas/resumo-mes.html': '3/4', 'hu-lucas/mensagem.html': '4/4' };
 
@@ -558,7 +574,19 @@
     } catch (e) { return; }
     if (!doc) return;
 
-    if (caminho.endsWith('hu-antonio/index.html')) {
+    // Reforço: se a tela do Antônio seguiu para a tela 2 com "Para mim" marcado,
+    // a apresentação leva para o fluxo do Lucas mesmo assim.
+    if (caminho.endsWith('hu-antonio/como-fica.html')) {
+      let modo = null;
+      try { modo = (JSON.parse(app.contentWindow.sessionStorage.getItem('bulbe-cadastro')) || {}).modo; } catch (e) { /* sem sessão */ }
+      if (modo === 'mim') {
+        try { app.contentWindow.sessionStorage.removeItem('bulbe-cadastro'); } catch (e) { /* ok */ }
+        abrirTela(TELA_LUCAS);
+      }
+      return;
+    }
+
+    if (caminho.endsWith('hu-antonio/index.html') || caminho.endsWith('hu-antonio/')) {
       const paraMim = doc.getElementById('para-mim');
       const etapa = doc.querySelector('.etapa');
       const barra = doc.querySelector('.progresso__barra');
@@ -569,13 +597,35 @@
       doc.querySelectorAll('input[name="para-quem"]').forEach((r) => r.addEventListener('change', atualizar));
       atualizar();
       // Captura o envio antes do script da tela: "Para mim" segue para o fluxo do Lucas.
-      doc.addEventListener('submit', (evento) => {
+      const seguirParaLucas = (evento) => {
         if (!paraMim.checked) return;
+        const botao = doc.getElementById('botao-proximo');
+        if (!botao || botao.disabled) return;
         evento.preventDefault();
         evento.stopPropagation();
-        const botao = doc.getElementById('botao-proximo');
-        if (botao && !botao.disabled) abrirTela(TELA_LUCAS);
-      }, true);
+        abrirTela(TELA_LUCAS);
+      };
+      doc.addEventListener('submit', seguirParaLucas, true);
+      const botaoProximo = doc.getElementById('botao-proximo');
+      if (botaoProximo) botaoProximo.addEventListener('click', seguirParaLucas, true);
+      return;
+    }
+
+    // Telas de quem já está logado (Maria e Henrique): as abas do rodapé ligam uma à outra.
+    const ehMaria = caminho.endsWith('pages/exemplo-elita.html');
+    const ehHenrique = ['consumo/index.html', 'consumo-cenarios/index.html', 'consumo-creditos/index.html'].some((k) => caminho.endsWith('pages/' + k));
+    if (ehMaria || ehHenrique) {
+      const destino = ehMaria
+        ? { aba: 'Consumo', tela: '../pages/consumo/index.html' }
+        : { aba: 'Conexão', tela: '../pages/exemplo-elita.html' };
+      doc.querySelectorAll('.navegacao .nav-item').forEach((item) => {
+        if (item.textContent.trim() !== destino.aba) return;
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', (evento) => {
+          evento.preventDefault();
+          abrirTela(destino.tela);
+        });
+      });
       return;
     }
 
@@ -635,6 +685,12 @@
     }
 
     $('bloco-telas').hidden = !s.telas || s.telas.length === 0;
+
+    // Aviso de integração, abaixo das telas
+    const nota = $('integracao');
+    nota.replaceChildren();
+    nota.hidden = !s.integrado;
+    if (s.integrado) nota.append(criar('b', 'Fluxo integrado '), document.createTextNode(s.integrado));
 
     const telas = $('telas');
     telas.replaceChildren();
