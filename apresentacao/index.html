@@ -396,6 +396,7 @@
     color: #DDE3F5;
   }
   .nota-integracao b { color: var(--verde); font-weight: 600; }
+  .painel h1.titulo--grande { font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.05; }
 </style>
 </head>
 <body>
@@ -453,7 +454,7 @@
       id: 'capa',
       nome: 'Capa',
       titulo: 'Guia de Entendimento do Cliente Bulbe · Sprint final',
-      historia: 'Clientes não entendem como a Bulbe funciona nem de onde vem o desconto: 27,7% do churn acontece por falta de compreensão do produto. Cada integrante criou uma persona, mapeou a jornada dela e transformou o principal ponto de dor em telas do app. Na sprint final, as telas foram organizadas na ordem da jornada e algumas foram integradas: Antônio com Lucas, na adesão, e Maria com Henrique, nas abas do app.',
+      historia: 'Clientes não entendem como a Bulbe funciona nem de onde vem o desconto: 27,7% do churn acontece por falta de compreensão do produto. Cada integrante criou uma persona, mapeou a jornada dela e transformou o principal ponto de dor em telas do app. Na sprint final, as telas foram organizadas na ordem da jornada e algumas foram integradas: Carla, Antônio e Lucas, na adesão, e Maria com Henrique, nas abas do app.',
       capa: true,
       aviso: { selo: 'MVP · Sprint final', titulo: 'Apresentação das telas do grupo', texto: 'Da descoberta da Bulbe à mudança de endereço, na ordem da jornada do cliente.' }
     },
@@ -462,6 +463,7 @@
       nome: 'Carla · Como funciona',
       titulo: 'Entender como a Bulbe funciona',
       hu: 'HU1', persona: 'Carla Mendes, 38 anos', autor: 'João Pedro Roenick',
+      integrado: 'com o Antônio. “Quero aderir à Bulbe” abre o cadastro dele',
       historia: 'Como Carla, cliente nova que não entende como a Bulbe funciona, quero ver uma explicação simples de como a energia por assinatura funciona já na página de entrada, para decidir a adesão com confiança.',
       telas: [['Como funciona a Bulbe?', '../pages/Telas-Jo%C3%A3o/index.html']]
     },
@@ -470,7 +472,7 @@
       nome: 'Antônio · Duas contas',
       titulo: 'Explicar as duas contas ao titular',
       hu: 'HU2', persona: 'Antônio, 63 anos', autor: 'Thiago Peixoto',
-      integrado: 'com o Lucas. “Para mim” segue para as telas dele',
+      integrado: 'com a Carla e o Lucas. O cadastro abre pelo “Quero aderir à Bulbe” da Carla, e “Para mim” segue para as telas do Lucas',
       historia: 'Como familiar que faz a adesão em nome do titular da conta de luz, quero informar que o cadastro é para outra pessoa e enviar a ele pelo WhatsApp uma explicação simples de como fica a conta de luz com a Bulbe, para que ele entenda que a economia vem da Bulbe e reconheça a cobrança como legítima.',
       telas: [['Informe seus dados', '../pages/hu-antonio/index.html'], ['Veja como fica a conta', '../pages/hu-antonio/como-fica.html'], ['Confira a mensagem', '../pages/hu-antonio/mensagem.html']]
     },
@@ -512,10 +514,11 @@
     {
       id: 'encerramento',
       nome: 'Encerramento',
-      titulo: 'Uma jornada explicada, do anúncio à mudança',
-      historia: 'As seis histórias cobrem os momentos em que o cliente mais se confunde: entender o produto, aderir por outra pessoa, acompanhar a conexão, entender as duas faturas, conferir o desconto e mudar de endereço. Todas as telas seguem o mesmo template, com a identidade visual da Bulbe.',
+      titulo: 'Obrigado(a)!',
+      historia: 'Fim da apresentação · Squad 02 · Bulbe Energia',
       capa: true,
-      aviso: { selo: 'Squad 02', titulo: 'Obrigado!', texto: 'Código, histórias e wireframes no repositório do grupo no GitHub (Joao-R-web/202602-projeto1-a-grupo02).' }
+      semEquipe: true,
+      aviso: { selo: 'Encerramento', titulo: 'Obrigado(a)!', texto: 'Squad 02 · Sprint final' }
     }
   ];
 
@@ -560,9 +563,11 @@
 
   // ---------- Fluxos integrados (só na apresentação) ----------
   // As telas do repositório continuam independentes. Aqui, na apresentação:
+  // - "Quero aderir à Bulbe" da Carla abre a tela 1 do Antônio (cadastro);
   // - "Para mim" na tela 1 do Antônio leva às telas do Lucas, e as etapas viram 1/4 a 4/4;
   // - a aba Consumo da Maria leva às telas do Henrique, e a aba Conexão do Henrique volta à Maria.
   const TELA_LUCAS = '../pages/hu-lucas/index.html';
+  const TELA_ANTONIO = '../pages/hu-antonio/index.html';
   const ETAPAS_LUCAS = { 'hu-lucas/index.html': '2/4', 'hu-lucas/resumo-mes.html': '3/4', 'hu-lucas/mensagem.html': '4/4' };
 
   function integrarFluxo() {
@@ -573,6 +578,18 @@
       caminho = decodeURIComponent(app.contentWindow.location.pathname);
     } catch (e) { return; }
     if (!doc) return;
+
+    // Carla (João): o botão "Quero aderir à Bulbe" abre o cadastro (tela 1 do Antônio).
+    if (caminho.includes('Telas-João/')) {
+      doc.querySelectorAll('.rodape .botao--primario, button.botao--primario').forEach((botao) => {
+        if (!/aderir/i.test(botao.textContent)) return;
+        botao.addEventListener('click', (evento) => {
+          evento.preventDefault();
+          abrirTela(TELA_ANTONIO);
+        });
+      });
+      return;
+    }
 
     // Reforço: se a tela do Antônio seguiu para a tela 2 com "Para mim" marcado,
     // a apresentação leva para o fluxo do Lucas mesmo assim.
@@ -651,6 +668,7 @@
 
     $('contador').textContent = `${atual + 1} de ${SLIDES.length}`;
     $('titulo').textContent = s.titulo;
+    $('titulo').classList.toggle('titulo--grande', s.id === 'encerramento');
     $('historia').textContent = s.historia;
 
     // Quem: história, persona e integrante
@@ -663,7 +681,7 @@
     // Capa e encerramento: equipe em vez de telas e critérios
     const extra = $('extra');
     extra.replaceChildren();
-    if (s.capa) {
+    if (s.capa && !s.semEquipe) {
       const lista = criar('ul', undefined, 'equipe');
       EQUIPE.forEach(([persona, nome]) => {
         const li = criar('li', nome);
