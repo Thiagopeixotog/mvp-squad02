@@ -397,6 +397,7 @@
   }
   .nota-integracao b { color: var(--verde); font-weight: 600; }
   .painel h1.titulo--grande { font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.05; }
+  .disclaimer { margin: 0; font-size: 0.85rem; color: var(--texto-suave, #C9D3F2); opacity: 0.9; }
 </style>
 </head>
 <body>
@@ -518,6 +519,7 @@
       historia: 'Fim da apresentação · Squad 02 · Bulbe Energia',
       capa: true,
       semEquipe: true,
+      disclaimer: 'Código, histórias e wireframes no repositório do grupo no GitHub (Joao-R-web/202602-projeto1-a-grupo02).',
       aviso: { selo: 'Encerramento', titulo: 'Obrigado(a)!', texto: 'Squad 02 · Sprint final' }
     }
   ];
@@ -681,6 +683,10 @@
     // Capa e encerramento: equipe em vez de telas e critérios
     const extra = $('extra');
     extra.replaceChildren();
+    if (s.disclaimer) {
+      const d = criar('p', s.disclaimer, 'disclaimer');
+      extra.append(d);
+    }
     if (s.capa && !s.semEquipe) {
       const lista = criar('ul', undefined, 'equipe');
       EQUIPE.forEach(([persona, nome]) => {
