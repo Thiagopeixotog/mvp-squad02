@@ -561,7 +561,20 @@
     });
   }
 
-  app.addEventListener('load', () => { marcarTelaAtual(); integrarFluxo(); });
+  // Quando um fluxo integrado leva à tela de outra história, o slide acompanha a tela.
+  function slideDaTela(caminho) {
+    return SLIDES.findIndex((s) => (s.telas || []).some(([, alvo]) =>
+      caminho.endsWith(decodeURIComponent(alvo.replace(/^(\.\.\/)+/, '')))));
+  }
+
+  app.addEventListener('load', () => {
+    let caminho = '';
+    try { caminho = decodeURIComponent(app.contentWindow.location.pathname); } catch (e) { /* outra origem */ }
+    const dono = caminho ? slideDaTela(caminho) : -1;
+    if (dono >= 0 && dono !== atual) mostrar(dono, true);
+    marcarTelaAtual();
+    integrarFluxo();
+  });
 
   // ---------- Fluxos integrados (só na apresentação) ----------
   // As telas do repositório continuam independentes. Aqui, na apresentação:
@@ -664,7 +677,7 @@
   }
 
   // ---------- Mostrar um slide ----------
-  function mostrar(n) {
+  function mostrar(n, manterTela = false) {
     atual = Math.max(0, Math.min(SLIDES.length - 1, n));
     const s = SLIDES[atual];
 
@@ -731,7 +744,7 @@
     $('aviso').hidden = temTela;
     $('reiniciar').hidden = !temTela;
     if (temTela) {
-      abrirTela(s.telas[0][1]);
+      if (!manterTela) abrirTela(s.telas[0][1]);
     } else {
       app.src = 'about:blank';
       const corpo = $('aviso-corpo');
